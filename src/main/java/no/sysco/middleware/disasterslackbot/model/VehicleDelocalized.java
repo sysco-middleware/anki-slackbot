@@ -1,19 +1,38 @@
 package no.sysco.middleware.disasterslackbot.model;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+// Prakhar : Dirty hack for column names. By default, the column names for stream are uppercase.
+// ksql should be configured to fix this.
 public class VehicleDelocalized {
 
+    @JsonProperty("TYPE")
     private String type;
+    @JsonProperty("CARID")
     private String carId;
+    @JsonProperty("DEVICEID")
     private String deviceId;
+    @JsonProperty("CARNAME")
     private String carName;
+    @JsonProperty("LASTKNOWNTRACK")
     private Integer lastKnownTrack;
+    @JsonProperty("RACESTATUS")
     private String raceStatus;
+    @JsonProperty("RACEID")
     private Integer raceId;
+    @JsonProperty("LAP")
     private Integer lap;
+    @JsonProperty("DATETIME")
     private Long dateTime;
+    @JsonProperty("DATETIMESTRING")
     private String dateTimeString;
+    @JsonProperty("DEMOZONE")
     private String demozone;
+
 
     public String getType() {
         return type;
@@ -88,6 +107,10 @@ public class VehicleDelocalized {
     }
 
     public String getDateTimeString() {
+        // if datetimeString is not available, then user this.datetime to populate values
+        if(this.dateTimeString == null){
+            return new SimpleDateFormat("dd/MM/yy HH:mm:ss").format(new Date(this.dateTime));
+        }
         return dateTimeString;
     }
 
